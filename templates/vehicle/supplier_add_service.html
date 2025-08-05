@@ -232,7 +232,7 @@ if (q == 0 ){
 
 
         
-        const url = "http://127.0.0.1:8000/send-record";
+        const url = "https://kaslor.co.zw//send-record";
 
 
         const data = {
@@ -248,9 +248,9 @@ if (q == 0 ){
 
         $.post(url,data, function(data,status){
         if (data['message']=="success"){
-            window.location.href="http://127.0.0.1:8000/view-awards";
+            window.location.href="https://kaslor.co.zw//view-awards";
         }else{
-            window.location.href="http://127.0.0.1:8000/view-awards";
+            window.location.href="https://kaslor.co.zw//view-awards";
 
         }
 
