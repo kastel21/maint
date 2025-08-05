@@ -1,0 +1,74 @@
+{% extends 'vehicle/customerbase.html' %}
+{% block content %}
+
+	<!-- main content -->
+	<div class="wrapper">
+<style>
+
+.cc:link {
+  background-color: #3639f4;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cc:hover {
+  background-color: rgb(103, 198, 236);
+}
+</style>
+<!-- ****** table  start ********** -->
+		<div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 style="color:red; text-align:center" >Pending Request & Delete
+						</h3>
+
+					</div>
+					<div class="card-content">
+						<table>
+							<thead>
+                <tr>
+                  <th>Vehicle Reg No.</th>
+                  <th>Category</th>
+                  <th>Mechanic</th>
+                  <th>Cost of Service</th>
+				  <th>Date of Completion</th>
+				  <th>Lab Manager</th>
+
+
+            
+
+                </tr>
+							</thead>
+							<tbody>
+                {% for enq in services %}
+                <tr>         
+					<form method="post" action="manager-open-job"> 
+						{% csrf_token %}   
+						<input style="display: none;" type="text" name="id" value="{{enq.id}}" />
+					<td  ><input type="submit" class="cc" style="color: black;" value='{{enq.reg_num}}' /></td>
+					</form> 
+                  <td>{{enq.service}}</td>
+                  <td>{{enq.mechanic}}</td>
+                  <td>{{enq.cos}}</td>
+                  <td>{{enq.doc}}</td>
+				  <td>{{enq.lab_manager}}</td>
+
+
+                </tr>
+                {% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- ****** table start ********** -->
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+	<!-- end main content -->
+{% endblock content %}

@@ -1,0 +1,298 @@
+{% extends 'vehicle/customerbase.html' %}
+{% block content %}
+
+	<!-- main content -->
+	<div class="wrapper">
+<style>
+
+.cc:link {
+  background-color: #3639f4;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cc:hover {
+  background-color: rgb(103, 198, 236);
+}
+</style>
+<!-- ****** table  start ********** -->
+		<div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<a href="#" id="all_req" class="btn btn-primary" >All Requests</a>
+						<a href="#" id="comp_req"  class="btn btn-success" >Completed Requests</a>
+						<a href="#" id="rej_req"  class="btn btn-danger" >Rejected Requests</a>
+						<a href="#" id="ong_req"  class="btn btn-warning" >Ongoing Requests</a>
+
+						<!-- <a href="#" id="all_serv"  class="btn btn-primary" >All Services</a>
+						<a href="#" id="comp_serv"  class="btn btn-success" >Completed Services</a>
+						<a href="#" id="rej_serv"  class="btn btn-danger" >Rejected Services</a>
+						<a href="#" id="ong_serv"  class="btn btn-warning" >Ongoing Services</a> -->
+
+
+					</div>
+					<div class="card-content">
+						<table class="table" id="tabledata">
+							<thead id="theadid">
+                <!-- <tr>
+
+                  <th>Service Date</th>
+                  <th>Reg No.</th>
+                  <th>Category</th>
+                  <th>Problem</th>
+                  <th>Mechanic</th>
+                  <th>Serviced</th>
+                  <th>Cost</th>
+                  <th>next_service</th>
+
+
+
+            
+
+                </tr> -->
+							</thead>
+							<tbody id="tbodyid">
+
+
+							</tbody>
+							<button id="down">Download CSV</button>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- ****** table start ********** -->
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+	<!-- end main content -->
+
+
+	<script>
+
+        $(document).ready(function () {
+            $('#down').on('click', function () {
+                $("#tabledata").table2excel({
+                    filename: "employeeData.xls"
+                });
+            });
+        });
+
+//completed reuqtes
+$("#comp_req").click(function(){
+//alert("clicked")
+
+  $.get("http://127.0.0.1:8000/get_table_data",
+  {
+    name: "req_completed",
+    city: "Duckburg"
+  },
+  function(data, status){
+
+    console.log(data);
+
+		$("#tbodyid").empty();
+		$("#theadid").empty();
+
+		//Try to get tbody first with jquery children. works faster!
+		var tbody = $('#tabledata').children('tbody');
+		var th = $('#tabledata').children('thead');
+
+		//Then if no tbody just select your table 
+		var table = tbody.length ? tbody : $('#tabledata');
+		//var table = tbody.length ? tbody : $('#tabledata');
+
+		//Add row
+		        //   <th></th>
+                //   <th></th>
+                //   <th>Category</th>
+                //   <th>Problem</th>
+                //   <th>Mechanic</th>
+                //   <th>Serviced</th>
+                //   <th>Cost</th>
+                //   <th>next_service</th>
+
+		    //let arr = [10, 20, 30, 40, 50];
+
+						table.append("  <tr><th>Service Date</th><th>Reg No.</th><th>Category</th><th>Problem</th><th>Mechanic</th><th>Serviced</th><th>Cost</th><th>next service in km</th></tr>"
+					
+					);
+    		$.each(data['data'], function (index, value) {
+
+
+
+
+					table.append('<tr><td>'
+						+value["doc"]+'</td><td>'
+						+value["vehicle_reg"]+'</td><td>'
+						+value["category"]+'</td><td>'
+						+value["problem_description"]+'</td><td>'
+						+value["mechanic"]+'</td><td>'
+						+value["values"]+'</td><td>'
+						+value["cos"]+'</td><td>'
+						+value["next_service"]+'km</td></tr>'
+					
+					);
+
+
+
+    		}); 
+
+
+
+
+  });
+});
+
+
+
+//all requests
+$("#all_req").click(function(){
+//alert("clicked")
+
+  $.get("http://127.0.0.1:8000/get_table_data",
+  {
+    name: "all_req",
+    city: "Duckburg"
+  },
+  function(data, status){
+
+    console.log(data);
+
+		$("#tbodyid").empty();
+		$("#theadid").empty();
+
+		//Try to get tbody first with jquery children. works faster!
+		var tbody = $('#tabledata').children('tbody');
+		var th = $('#tabledata').children('thead');
+
+		//Then if no tbody just select your table 
+		var table = tbody.length ? tbody : $('#tabledata');
+		//var table = tbody.length ? tbody : $('#tabledata');
+
+		//Add row
+		        //   <th></th>
+                //   <th></th>
+                //   <th>Category</th>
+                //   <th>Problem</th>
+                //   <th>Mechanic</th>
+                //   <th>Serviced</th>
+                //   <th>Cost</th>
+                //   <th>next_service</th>
+
+		    //let arr = [10, 20, 30, 40, 50];
+
+						table.append("  <tr><th>Request Date</th><th>Reg No.</th><th>Category</th><th>Problem</th><th>PC Approved</th><th>Reasons for Rejection</th><th>Submisions</th><th>Open for Submission</th></tr>"
+					
+					);
+    		$.each(data['data'], function (index, value) {
+
+
+
+
+					table.append('<tr><td>'
+						+value["date1"]+'</td><td>'
+						+value["vehicle_reg"]+'</td><td>'
+						+value["category"]+'</td><td>'
+						+value["problem_description"]+'</td><td>'
+						+value["pc_approved"]+'</td><td>'
+						+value["reasons"]+'</td><td>'
+						+value["subs"]+'</td><td>'
+						+value["job_open"]+'</td></tr>'
+					
+					);
+
+
+
+    		}); 
+
+
+
+
+  });
+});
+
+
+
+
+
+
+
+//all requests
+$("#all_bikes").click(function(){
+//alert("clicked")
+
+  $.get("http://127.0.0.1:8000/get_table_data",
+  {
+    name: "all_bikes",
+    city: "Duckburg"
+  },
+  function(data, status){
+
+    console.log(data);
+
+		$("#tbodyid").empty();
+		$("#theadid").empty();
+
+		//Try to get tbody first with jquery children. works faster!
+		var tbody = $('#tabledata').children('tbody');
+		var th = $('#tabledata').children('thead');
+
+		//Then if no tbody just select your table 
+		var table = tbody.length ? tbody : $('#tabledata');
+		//var table = tbody.length ? tbody : $('#tabledata');
+
+		//Add row
+		        //   <th></th>
+                //   <th></th>
+                //   <th>Category</th>
+                //   <th>Problem</th>
+                //   <th>Mechanic</th>
+                //   <th>Serviced</th>
+                //   <th>Cost</th>
+                //   <th>next_service</th>
+
+		    //let arr = [10, 20, 30, 40, 50];
+
+						table.append("  <tr><th>Request Date</th><th>Reg No.</th><th>Category</th><th>Problem</th><th>PC Approved</th><th>Reasons for Rejection</th><th>Submisions</th><th>Open for Submission</th></tr>"
+					
+					);
+    		$.each(data['data'], function (index, value) {
+
+
+
+
+					table.append('<tr><td>'
+						+value["date1"]+'</td><td>'
+						+value["vehicle_reg"]+'</td><td>'
+						+value["category"]+'</td><td>'
+						+value["problem_description"]+'</td><td>'
+						+value["pc_approved"]+'</td><td>'
+						+value["reasons"]+'</td><td>'
+						+value["subs"]+'</td><td>'
+						+value["job_open"]+'</td></tr>'
+					
+					);
+
+
+
+    		}); 
+
+
+
+
+  });
+});
+
+
+
+
+
+
+
+
+	</script>
+{% endblock content %}

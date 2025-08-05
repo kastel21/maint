@@ -1,0 +1,64 @@
+{% extends 'vehicle/customerbase.html' %}
+{% block content %}
+
+	<!-- main content -->
+	<div class="wrapper">
+
+<!-- ****** table  start ********** -->
+		<div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 style="color:red; text-align:center" >Pending Request & Delete
+						</h3>
+
+					</div>
+					<div class="card-content">
+						<table>
+							<thead>
+                <tr>
+                  <th>Vehicle Reg No.</th>
+                  <th>Category</th>
+                  <th>Problem Description</th>
+                  <th>Enquiry Date</th>
+				  <th>Status</th>
+				  <th>PC</th>
+				  <th>Lab Manager</th>
+
+
+                  
+
+
+				  <th>Delete Enquiry</th>
+                </tr>
+							</thead>
+							<tbody>
+                {% for enq in enquiries %}
+                <tr>
+                  <td>{{enq.vehicle_reg}}</td>
+                  <td>{{enq.category}}</td>
+                  <td>{{enq.problem_description}}</td>
+                  <td>{{enq.date}}</td>
+                  <td>{{enq.status}}</td>
+				  <td>{{enq.pc}}</td>
+				  <td>{{enq.lab_manager}}</td>
+
+				{%if groups in user.groups.all %}
+				<td></td>
+				{%else%}
+                  <td><a style="color:blue; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td>
+				{%endif%}
+                </tr>
+                {% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- ****** table start ********** -->
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+	<!-- end main content -->
+{% endblock content %}

@@ -1,0 +1,36 @@
+1. lab man create requests done
+2. it goes to PC and lab manager done
+3. PC  or lab manager approves done
+4. it goes to finance and approves done
+5. it goes back to Procurement and s/he opens for suppliers done
+6. pro requests for quotations done
+7. service provider updates the system uploads quotation 
+7i. upload quote and save done
+7ii. Procurement reviews the submissions and selects a supplier done
+8. pro selects service provider and provide justification done
+8i. close the Job done
+9. service provider uploads invoice
+10. lab manager approves
+11. LO downloads invoice and uploads POP
+
+
+
+
+
+manager logs fault
+pc approves fault
+technical person approves and open for suppliers
+suppliers uploads quotation
+pc/tech swlects supplier
+finance approves
+supplier accepts
+supplier uploads invoice
+lab manager approves
+tech approves
+LO uploads POP
+
+
+<!-- //table.append(' <tr><td>{{value[0]}}</td><td>{{value[1]}}</td><td>{{value["problem_description"]}}</td><td>{{value["date"]}}</td><td>{{value["job_open"]}}</td><td>{{value["pc"]}}</td><td>{{value["lab_manager"]}}</td><td>{{value["subs"]}}</td></tr>'); -->
+
+
+

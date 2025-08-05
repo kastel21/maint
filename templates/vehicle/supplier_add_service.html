@@ -1,0 +1,270 @@
+{% extends 'vehicle/customerbase.html' %}
+{% load static %}
+{% block content %}
+<style>
+
+
+
+.column {
+  float: left;
+  width: 33.33%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.column {
+  float: left;
+}
+
+.left, .right {
+  width: 25%;
+}
+
+.middle {
+  width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+ <div style="margin-top:10%; text-align:center;" class="mhead">
+ <h2 style="text-align:center;">Add A Bike Service Record</h2>
+ </div>
+
+
+
+ <div style="margin-top:30px; text-align:center;" class="container">
+
+ <form  action="" method="post">
+            {% csrf_token %}
+
+  <label class="head"> Enter Bike Registration Plate Number</label><br/>
+ <input type="text" id="reg_num"  value="{{enquiry.vehicle_reg}}" readonly><br/><br/>
+
+
+ <label class="head">Major Service</label>
+ <input type="radio" id="major" name="service" value="major" ><br/>
+  <label class="head">Minor Service</label>
+ <input type="radio" id="minor" name="service" checked="true" value="minor" ><br/><br/>
+
+
+
+  <!--1 to 25 the order of items-->
+<!--12V Battery-->
+<!--Accelerator cable-->
+<!--Air filter-->
+<!--Brake cable-->
+<!--Brake lever-->
+<!--Carrier box-->
+<!--Chain adjusters-->
+<!--Chain guides-->
+<!--Chain lubricant-->
+<!--Clutch basket-->
+<!--Clutch cable-->
+<!--Clutch lever-->
+<!--Drive chain kit-->
+<!--Engine oil / litre-->
+<!--Engine valves-->
+<!--Front shock seals-->
+<!--Front tube 300-21-->
+<!--Front tyre 2.75/18-->
+<!--Front tyre 300-21-->
+<!--Labour-->
+<!--Milage-->
+<!--Mono-shock-->
+<!--Piston kit-->
+<!--Piston ringgs-->
+<!--Rear tube 410-18-->
+<!--Rear tyre 410-18-->
+<!--Rear view mirrors-->
+<!--Sleeve kit-->
+<!--Spark plug-->
+<!--Speedo cable-->
+<!--Stem seals-->
+<!--Tension chain adjusting-->
+<!--Valve guides-->
+<!--Welding &fabrication of carrier-->
+<!--Welding& fabrication of frame-->
+<!--Wheel bearings-->
+
+
+
+
+ <label style="text-align:center;" class="head">Select Components worked on: </label><br/><br/>
+
+
+<div class="row" style="text-align:left;">
+
+
+
+
+<div class="column">
+ <input type="checkbox" id="1" value="12V Battery"><label> 12V Battery</label><br/>
+ <input type="checkbox" id="2" value="Accelerator cable"><label>Accelerator cable</label><br/>
+ <input type="checkbox" id="3" value="Air filter"><label>Air filter</label><br/>
+ <input type="checkbox" id="4" value="Brake cable"><label>Brake cable</label><br/>
+ <input type="checkbox" id="5" value="Brake lever"><label>Brake lever</label><br/><br/>
+  <input type="checkbox" id="6" value="Carrier box"><label>Carrier box</label><br/>
+ <input type="checkbox" id="7" value="Chain adjusters"><label>Chain adjusters</label><br/>
+ <input type="checkbox" id="8" value="Chain guides"><label>Chain guides</label><br/>
+ <input type="checkbox" id="9" value="Chain lubricant"><label>Chain lubricant</label><br/>
+ <input type="checkbox" id="10" value="Clutch basket"><label>Clutch basket</label><br/><br/>
+  <input type="checkbox" id="11" value="Clutch cable"><label>Clutch cable</label><br/>
+ <input type="checkbox" id="12" value="Clutch lever"><label> Clutch lever</label><br/>
+
+
+
+ </div>
+
+
+
+ <div class="column">
+ <input type="checkbox" id="13" value="Drive chain kit"><label>Drive chain kit</label><br/>
+ <input type="checkbox" id="14" value="Engine oil litres"><label>Engine oil litres</label><br/>
+ <input type="checkbox" id="15" value="Engine valves"><label>Engine valves</label><br/><br/>
+  <input type="checkbox" id="16" value="Front shock seals"><label>Front shock seals</label><br/>
+ <input type="checkbox" id="17" value="Front tube 300-21"><label>Front tube 300-21</label><br/>
+ <input type="checkbox" id="18" value="Front tyre 2.75/18"><label>Front tyre 2.75/18</label><br/>
+ <input type="checkbox" id="19" value="Front tyre 300-21"><label>Front tyre 300-21</label><br/>
+ <input type="checkbox" id="20" value="Labour"><label>Labour</label><br/><br/>
+  <input type="checkbox" id="21" value="Milage"><label>Milage</label><br/>
+ <input type="checkbox" id="22" value="Mono-shock"><label>Mono-shock</label><br/>
+ <input type="checkbox" id="23" value="Piston kit"><label>Piston kit</label><br/>
+ <input type="checkbox" id="24" value="Piston rings"><label>Piston rings</label><br/>
+
+ </div>
+
+
+
+
+
+ <div class="column">
+
+ <input type="checkbox" id="25" value="Rear tube 410-18"><label>Rear tube 410-18</label><br/><br/>
+  <input type="checkbox" id="26" value="Rear tyre 410-18"><label>Rear tyre 410-18</label><br/>
+ <input type="checkbox" id="27" value="Rear view mirrors"><label>Rear view mirrors</label><br/>
+ <input type="checkbox" id="28" value="Sleeve kit"><label>Sleeve kit</label><br/>
+ <input type="checkbox" id="29" value="Spark plug"><label>Spark plug</label><br/>
+ <input type="checkbox" id="30" value="Speedo cable"><label>Speedo cable</label><br/><br/>
+  <input type="checkbox" id="31" value="Tension chain adjusting"><label>Tension chain adjusting</label><br/>
+ <input type="checkbox" id="32" value="Valve guides"><label>Valve guides</label><br/>
+ <input type="checkbox" id="33" value="Welding and fabrication of carrier"><label>Welding and fabrication of carrier</label><br/>
+ <input type="checkbox" id="34" value="Welding and fabrication of frame"><label>Welding and fabrication of frame</label><br/>
+ <input type="checkbox" id="35" value="Wheel bearings"><label>Wheel bearings</label><br/><br/>
+
+ <label>Next Service After:</label>   <input type="number" id="next_service_milage" placeholder="enter number in kms"><br/>
+
+ <input style="display: none;" type="text" id="r_id" value="{{enquiry.id}}"><br/>
+ <input style="display: none;" type="text" id="s_id" value="{{service_id}}"><br/><br/>
+
+</div>
+
+
+</div>
+
+<button class="btn btn-primary" onclick="delete1();"> Submit </button>
+
+
+
+ </form>
+ </div>
+ </div>
+
+</body>
+
+
+<script>
+
+    //alert(document.getElementById("1").value);
+
+
+
+
+
+function delete1() {
+
+var string_of_checked_values = "";
+var q = 0;
+var service ="minor";
+var next_service = document.getElementById("next_service_milage").value;
+var s_id = document.getElementById("s_id").value;
+var r_id = document.getElementById("r_id").value;
+
+if ( document.getElementById("major").checked){
+    service = "major";
+}
+
+    for (i = 1; i<=35; i++) {
+
+      box = document.getElementById(""+i);
+
+      if(box.checked){
+
+          string_of_checked_values = string_of_checked_values + box.value + "#"
+        q = q + 1;
+      }
+
+    }
+
+
+if (q == 0 ){
+        alert("Make sure you select atleast 1 component");
+
+}else{
+
+
+
+
+        
+        const url = "http://127.0.0.1:8000/send-record";
+
+
+        const data = {
+        "values":string_of_checked_values,
+        "service":service,
+        id:'1',
+        'r_id':r_id,
+        's_id':s_id,
+        'next_service':next_service
+
+        };
+
+
+        $.post(url,data, function(data,status){
+        if (data['message']=="success"){
+            window.location.href="http://127.0.0.1:8000/view-awards";
+        }else{
+            window.location.href="http://127.0.0.1:8000/view-awards";
+
+        }
+
+        });
+    
+
+
+    
+}
+
+
+
+}
+</script>
+
+{% endblock content %}
+

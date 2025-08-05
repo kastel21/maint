@@ -1,0 +1,90 @@
+{% extends 'vehicle/adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+  <style media="screen">
+    input[type=text], select,input[type=number] , textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+
+  </style>
+
+
+</head>
+
+<br><br><br><br><br>
+<h3 style="text-align:center;">APPROVE REQUEST OR CHANGE STATUS </h3>
+<div>
+  <form method="post" action="{% url 'fin-change-status' enquiry_x1.id %}" style="margin-left:200px;margin-right:200px;">
+      {% csrf_token %}
+
+
+    <label for="status">Finance Status</label>
+
+    <select name="status" id="status" onchange="val()"> 
+      <option  value="{% ifequal enquiry_x1.finance_approved 'No' %}pending{%else%}approved{%endifequal%} "> {% ifequal enquiry_x1.finance_approved 'No' %} Pending    {%else%} Approved {%endifequal%}</option>
+      <option value="approved"> Approved</option>
+      <option value="reject"> Reject</option>
+
+
+
+    </select>
+
+
+    <label for="problem_description">Description</label>
+    <textarea type="text" name="problem_description" id="problem_description" class="form-control" readonly > {{enquiry_x1.problem_description}}</textarea >
+
+      <div id="hide" style="display: none;">
+    <label for="reasons">Reasons for Rejection</label>
+    <textarea type="text" name="reasons" id="reasons" class="form-control" readonly  placeholder="Enter reasons for rejection"></textarea >
+</div>
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<script>
+function val() {
+    d = document.getElementById("status").value;
+    if(d == 'reject'){
+      console.log(d);
+      var yourUl = document.getElementById("hide");
+      yourUl.style.display = yourUl.style.display === 'none' ? '' : 'none';
+
+    }
+    else{
+
+      var yourUl = document.getElementById("hide");
+      yourUl.style.display = yourUl.style.display === 'none' ? '' : 'none';
+    }
+
+
+
+  }
+</script>
+{% endblock content %}

@@ -1,0 +1,114 @@
+{% extends 'vehicle/customerbase.html' %}
+{% load static %}
+{% block content %}
+
+	<!-- main content -->
+	<div class="wrapper">
+<style>
+
+.cc:link {
+  background-color: #3639f4;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cc:hover {
+  background-color: rgb(103, 198, 236);
+}
+</style>
+<!-- ****** table  start ********** -->
+		<header>
+  <h1 class="page-title">{{ title }}</h1>
+  <div class="path">{{ path }}</div>
+</header>
+
+<div class="viewport">
+  <div class="container">
+
+    <!-- Headers received from client. -->
+    <div  class="table-container headers">
+      <h2 style="text-align: center;">Request for {{enquiry.vehicle_reg}} f{{flag1}}</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th> Key</th>
+            <th> Value</th>
+          </tr>
+		  <tr><td>Vehicle Model:</td> <td>{{enquiry.vehicle_model}}</td></tr>
+		  <tr><td>Vehicle Brand:</td> <td>{{enquiry.vehicle_brand}}</td></tr>
+		  <tr><td colspan="2">Problem Description:</td></tr>
+		  <tr> <td colspan="2" style="text-align: center;">  {{enquiry.problem_description}}</td></tr>
+
+		  <tr><td>Date of Request:</td> <td>{{enquiry.date}}</td></tr>
+		  <tr><td>Cost of The Repair:</td> <td>{{enquiry.cost}}</td></tr>
+		  <tr><td>Lab Manager:</td> <td>{{enquiry.customer1}}</td></tr>
+		  <tr><td>Mechanic Assigned:</td> <td>{{enquiry.mechanic}}</td></tr>
+		  <tr><td>Status of Approval:</td> <td>{{enquiry.status}}</td></tr>
+		  <tr><td>Provincinal Coordinator:</td> <td>{{enquiry.pc}}</td></tr>
+		  <tr><td>PC Approved:</td> <td>{{enquiry.pc_approved}}</td></tr>
+		  <tr><td>Finance Officer:</td> <td>{{enquiry.finance}}</td></tr>
+		  <tr><td>Finance Approved:</td> <td>{{enquiry.finance_approved}}</td></tr>
+		  <tr><td>Job Open for submissions:</td> <td>{{enquiry.job_open}}</td></tr>
+		  <tr><td>Tehnical person:</td> <td>{{enquiry.technical}}</td></tr>
+		  <tr><td>Lab Manager:</td> <td>{{enquiry.lab_manager}}</td></tr>
+		  <tr><td>Lab Manager Approved:</td> <td>{{enquiry.lab_approved}}</td></tr>
+
+		  <tr><td>Technical Person Approved:</td> <td>{{enquiry.technical_approved}}</td></tr>
+
+		  <tr><td>Technical Person Approved:</td> <td>{{enquiry.technical_fin_approved}}</td></tr>
+		  <tr><td>Supplier Submissions:</td> <td>{{enquiry.subs}}</td></tr>
+
+
+
+		  	{%if flag1 == 'completed' or flag1 == 'rejected' or flag1 == 'approved' %}
+			{%else%}
+
+
+			<tr> <td colspan="2" id="hide" style="display: none;">
+				<textarea class="form-control" name="reason" id="reasons" placeholder="enter the reasons for rejection"></textarea>
+			</td>
+			</tr>
+			<tr>
+			      <td> <form method="post" action="tech-approves-request"> 
+						{% csrf_token %}   
+						<input style="display: none;" type="text" name="r_id" value="{{enquiry.id}}" />
+
+					<input type="submit" class="cc" style="color: black;" value='Approve & Open' />
+				</form>
+				</td> 
+				<td> <button id="button" onclick="val()">Reject</button> </td>
+				</tr>
+
+			
+
+			{%endif%}
+
+        </thead>
+
+      </table>
+
+
+
+
+    </div>
+
+
+
+  </div>
+</div>
+
+
+<script>
+function val() {
+
+      var yourUl = document.getElementById("hide");
+      yourUl.style.display = yourUl.style.display === 'none' ? '' : 'none';
+
+      var yourUl1 = document.getElementById("button");
+      yourUl1.style.display = yourUl1.style.display === 'none' ? '' : 'none';
+  }
+</script>
+{% endblock content %}
