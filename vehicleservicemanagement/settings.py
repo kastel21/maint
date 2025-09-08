@@ -90,24 +90,34 @@ WSGI_APPLICATION = 'vehicleservicemanagement.wsgi.application'
 
 
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'LSS',
-        'USER': 'admin',
-        'PASSWORD': 'Adm!n123',
-        'HOST': 'mssql-133539-0.cloudclusters.net',
-        "PORT":"17983",
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-        },
-    },
-    'auth_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'auth_db.sqlite3',
-    },
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bikes',
+        'USER': 'root',
+        'PASSWORD': 'p@s3w0rd?1995',
+        'HOST':'localhost',
+        'PORT':'3306',
+    }
 }
 
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'LSS',
+#         'USER': 'admin',
+#         'PASSWORD': 'Adm!n123',
+#         'HOST': 'mssql-133539-0.cloudclusters.net',
+#         "PORT":"17983",
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     }
+
+# }
 
 
 # Password validation

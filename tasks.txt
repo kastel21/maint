@@ -18,15 +18,14 @@
 
 
 manager logs fault
-pc approves fault
-technical person approves and open for suppliers
+pc approves fault and open for suppliers
 suppliers uploads quotation
-pc/tech swlects supplier
+Procurement swlects supplier
 finance approves
 supplier accepts
 supplier uploads invoice
 lab manager approves
-tech approves
+PC approves
 LO uploads POP
 
 

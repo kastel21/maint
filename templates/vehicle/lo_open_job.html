@@ -106,11 +106,13 @@
 		<tr> <td>Lab Manager:</td><td>{{service.lab_manager}}</td>  </tr>
 		<tr> <td>Manager Approved:</td><td>{{service.manager_approved}}</td>  </tr>
 		<tr> <td>Manager Approved Date:</td><td>{{service.manager_approved_date}}</td>  </tr>
-		<tr> <td>Next Service after:</td><td>{{service.next_service}}km</td>  </tr>
+		<tr> <td>Next Minor Service after:</td><td>{{service.next_service_minor}}km</td>  </tr>
+		<tr> <td>Next Major Service after:</td><td>{{service.next_service_major}}km</td>  </tr>
 
 		<tr> <td colspan="2" style="text-align: center;">Components Serviced:</td> </tr>
 		<tr><td colspan="2" style="text-align: center;">{{service.values}}</td>  </tr>
 		<tr> <td>Invoice:</td><td><a href="static/{{service.invoice}}">{{service.invoice}}</a></td>  </tr>
+		<tr> <td>Confirmation of Satisfactory Service:</td><td><a href="static/{{service.CSS}}">{{service.CSS}}</a></td>  </tr>
 
 <form method="post" action="lo-uploads-pop" enctype="multipart/form-data"> 
 						{% csrf_token %}   

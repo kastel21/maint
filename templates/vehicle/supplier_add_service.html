@@ -168,9 +168,12 @@
  <input type="checkbox" id="34" value="Welding and fabrication of frame"><label>Welding and fabrication of frame</label><br/>
  <input type="checkbox" id="35" value="Wheel bearings"><label>Wheel bearings</label><br/><br/>
 
- <label>Next Service After:</label>   <input type="number" id="next_service_milage" placeholder="enter number in kms"><br/>
+ <label>Current Milage:</label>   <input type="number" id="current_milage" placeholder="enter number in kms"><br/>
 
- <input style="display: none;" type="text" id="r_id" value="{{enquiry.id}}"><br/>
+ <label>Next Minor Service After:</label>   <input type="number" id="next_service_milage_minor" placeholder="enter number in kms"><br/>
+ <label>Next Major Service After:</label>   <input type="number" id="next_service_milage_major" placeholder="enter number in kms"><br/>
+
+ <input style="display: none;" type="text" id="r_id" value="{{enquiry.id}}"><br/><br/>
  <input style="display: none;" type="text" id="s_id" value="{{service_id}}"><br/><br/>
 
 </div>
@@ -202,7 +205,12 @@ function delete1() {
 var string_of_checked_values = "";
 var q = 0;
 var service ="minor";
-var next_service = document.getElementById("next_service_milage").value;
+
+var current_milage = document.getElementById("current_milage").value;
+
+var next_service_milage_minor = document.getElementById("next_service_milage_minor").value;
+
+var next_service_milage_major = document.getElementById("next_service_milage_major").value;
 var s_id = document.getElementById("s_id").value;
 var r_id = document.getElementById("r_id").value;
 
@@ -232,7 +240,7 @@ if (q == 0 ){
 
 
         
-        const url = "https://kaslor.co.zw//send-record";
+        const url = "http://127.0.0.1:8000/send-record";
 
 
         const data = {
@@ -241,16 +249,18 @@ if (q == 0 ){
         id:'1',
         'r_id':r_id,
         's_id':s_id,
-        'next_service':next_service
+        'next_service_milage_minor':next_service_milage_minor,
+        'next_service_milage_major':next_service_milage_major,
 
+          'current_milage':current_milage
         };
 
 
         $.post(url,data, function(data,status){
         if (data['message']=="success"){
-            window.location.href="https://kaslor.co.zw//view-awards";
+            window.location.href="http://127.0.0.1:8000/view-awards";
         }else{
-            window.location.href="https://kaslor.co.zw//view-awards";
+            window.location.href="http://127.0.0.1:8000/view-awards";
 
         }
 

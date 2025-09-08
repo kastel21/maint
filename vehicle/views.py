@@ -23,7 +23,7 @@ def afterlogin_view(request):
 def home_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request,'vehicle/index.html')
+    return render(request,'vehicle/customerclick.html')
 
 
 #for showing signup/login button for customer
@@ -550,7 +550,15 @@ def pc_approves_request_view(request):
             enquiry.save()
         else:
             enquiry.pc_approved="Yes"
+            enquiry.pc_approved_date="Yes"
+
+            enquiry.job_open="Yes"
+            enquiry.job_open_date=formatted_date_str
+
             enquiry.save()
+
+            send_notice()
+
         return redirect('pc-view-request')
         #return render(request,'vehicle/pc_justify_supplier.html',{'customer':customer,'enquiry':enquiry})
     else:
@@ -624,21 +632,25 @@ def tech_open_request_view(request):
 def tech_approves_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
     if request.method=='POST':
-
-        r_id = request.POST.get('r_id', '0')
-        reasons = request.POST.get('reasons', '')
-
-        enquiry=models.Request.objects.get(id=r_id)
-        enquiry.reasons=reasons
         now = datetime.now()
         formatted_date_str = now.strftime("%Y-%m-%d")
-        enquiry.technical_approved="Yes"
-        enquiry.technical_approved_date =formatted_date_str
-        enquiry.job_open="Yes"
-        enquiry.job_open_date=formatted_date_str
+        r_id = request.POST.get('r_id', '0')
+        reasons = request.POST.get('reasons', '')
+        enquiry=models.Request.objects.get(id=r_id)
+
+        if reasons !="":
+            enquiry.reasons=reasons
+            enquiry.technical_approved="No"
+            enquiry.technical_rejected_date =formatted_date_str
+        else:
+            enquiry.technical_approved="Yes"
+            enquiry.technical_approved_date =formatted_date_str
+            enquiry.job_open_date=formatted_date_str
+            enquiry.job_open = "Yes"
+            send_notice()
 
         enquiry.save()
-        send_notice()
+        
         return redirect('tech-view-request')
         #return render(request,'vehicle/tech_approve_request.html',{'customer':customer,'enquiry':enquiry})
     else:
@@ -659,7 +671,7 @@ def tech_approves_request_view(request):
 def finance_view_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
 
-    enquiries=models.Request.objects.all().filter(  Q( pc_approved="Yes") & Q(finance_approved="No") & ~Q(mechanic="None") & Q(technical_approved="Yes") )
+    enquiries=models.Request.objects.all().filter(  Q( pc_approved="Yes") & Q(finance_approved="No") & ~Q(mechanic="None")  )
 
     print('comparing ', customer.user.username)
     print('with', enquiries)
@@ -774,7 +786,7 @@ def finance_approves_request_view(request):
 def lo_view_jobs_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
 
-    services=models.Service.objects.all().filter(  Q( tech_approved="Yes") & Q(POP_date='.') )
+    services=models.Service.objects.all().filter(  Q( manager_approved="Yes") & Q(POP_date='.') )
 
 
     #enquiries=models.Service.objects.all().filter(  Q( tech_approved="Yes") )
@@ -801,7 +813,6 @@ def lo_view_completed_request_view(request):
     return render(request,'vehicle/lo_view_jobs.html',{'customer':customer,'services':enquiries,'flag':'2'})
 
 
-
 @login_required(login_url='customerlogin')
 @user_passes_test(is_lo)
 def lo_open_job_view(request):
@@ -823,8 +834,58 @@ def lo_open_job_view(request):
         return render(request,'vehicle/lo_open_job.html',{'customer':customer,'enquiry':req,'sub':ass,'flag':flag,'service':service})
     else:
         return redirect('finance-view-request')
+    
 
 
+
+@login_required(login_url='customerlogin')
+@user_passes_test(is_customer)
+def customer_view_tracks_view(request):
+    customer=models.Customer.objects.get(user_id=request.user.id)
+
+    enquiries=models.Request.objects.all()
+
+    print('comparing ', customer.user.username)
+    print('with', enquiries)
+
+
+    return render(request,'vehicle/customer_view_tracks.html',{'customer':customer,'services':enquiries,'flag':'2'})
+
+
+@login_required(login_url='customerlogin')
+@user_passes_test(is_customer)
+def customer_open_track_view(request):
+    customer=models.Customer.objects.get(user_id=request.user.id)
+    if request.method=='POST':
+        s_id = request.POST.get('id', '0')
+        flag = request.POST.get('flag', '0')
+
+
+        service=False
+        ass = False
+
+        req=models.Request.objects.get(id=s_id)
+
+        for serv in models.Service.objects.all():
+            if serv.request_id == req.id:
+                service = serv
+                service.values = service.values.replace('#',', ')
+
+                break
+
+        try: 
+            ass=models.Assessments.objects.get(id=req.assessement_id)
+        except:
+            pass
+        #enquiry.job_open="No"
+
+
+        #enquiry.mechanic=subs.mechanic
+        #enquiry.save()
+
+        return render(request,'vehicle/customer_open_track.html',{'customer':customer,'enquiry':req,'sub':ass,'flag':flag,'service':service})
+    else:
+        return redirect('finance-view-request')
 
 
 import os
@@ -939,7 +1000,7 @@ def supplier_view_request_view(request):
 
         
     # else:
-    enquiries=models.Request.objects.all().filter(  Q( job_open="Yes") & Q(technical_approved="Yes") )
+    enquiries=models.Request.objects.all().filter(  Q( job_open="Yes") & Q(pc_approved="Yes") )
     asses= Assessments.objects.all().filter(mechanic=customer.user.username)
     asses_jobs = [x.job for x in asses]
     print('asseses', asses_jobs)
@@ -998,7 +1059,7 @@ def past_awards(request):
 
         
     # else:
-    enquiries=models.Request.objects.all().filter( Q( Q(mechanic=request.user.username)) & Q( supplier_accepted="Yes") & Q(supplier_done="Yes"))
+    enquiries=models.Service.objects.all().filter( Q( mechanic=request.user.username) & ~Q(POP_date ="." ))
 
     print('comparing ', customer.user.username)
     print('with', enquiries)
@@ -1115,15 +1176,13 @@ def supplier_open_past_award(request):
     if request.method=='POST':
         s_id = request.POST.get('id', '0')
 
-        enquiry=models.Request.objects.get(id=s_id)
-        #enquiry.job_open="No"
+        #enquiry=models.Request.objects.get(id=s_id)
+        service=models.Service.objects.get(id=s_id)
+        req=models.Request.objects.get(id=service.request_id)
+        ass=models.Assessments.objects.get(id=req.assessement_id)
+        service.values = service.values.replace('#',', ')
 
-        #subs= models.Assessments.objects.all().filter(job = s_id)
-
-        #enquiry.mechanic=subs.mechanic
-        #enquiry.save()
-
-        return render(request,'vehicle/open_past_award.html',{'customer':customer,'enquiry':enquiry})
+        return render(request,'vehicle/open_past_award.html',{'customer':customer,'enquiry':req,'service':service,'sub':ass})
     else:
         return redirect('supplier-view-request')
 
@@ -1202,12 +1261,20 @@ def supplier_update_award_view(request):
         r_id = request.POST.get('r_id', '0')
         reasons = request.POST.get('reasons', '')
 
+
         enquiry=models.Request.objects.get(id=r_id)
-        enquiry.reasons=reasons
         now = datetime.now()
+
         formatted_date_str = now.strftime("%Y-%m-%d")
-        enquiry.supplier_accepted="Yes"
-        enquiry.supplier_accepted_date =formatted_date_str
+        if reasons == '':
+
+            enquiry.supplier_accepted="Yes"
+            enquiry.supplier_accepted_date =formatted_date_str
+
+        else:
+            enquiry.reasons=reasons
+            enquiry.supplier_rejected_date=formatted_date_str
+
 
 
         enquiry.save()
@@ -1287,33 +1354,54 @@ def send_record(request):
             service = request.POST.get('service',default=None)
             r_id = request.POST.get('r_id',default=None)
             s_id = request.POST.get('s_id',default=None)
-            next_service = request.POST.get('next_service',default=None)
+            next_service_minor = request.POST.get('next_service_milage_minor',default=None)
+            current_milage = request.POST.get('current_milage',default=None)
+            next_service_major = request.POST.get('next_service_milage_major',default=None)
 
-            print('after get')
-
-            f= open("service.txt","w")
-            f.write(str(values)+str(0)+str(service))
-            f.close()
 
             record = models.Service.objects.get(id=s_id)
             record.values=values
+            record.current_milage=current_milage
 
-            record.next_service = next_service
-            print('after next')
+            record.next_service_minor = next_service_minor
+            record.next_service_major = next_service_major
+
+
 
             record.service = service
-            print('after service')
+
 
             record.mechanic = request.user.username
-            print('after mehanic')
+
 
             d = datetime.now()
-            print('after date',d)
 
-            record.doc = "{:%B %d, %Y}".format(d)
-            print('after date')
+            now = datetime.now()
+            formatted_date_str = now.strftime("%Y-%m-%d")
+            record.doc = formatted_date_str
+
             record.save()
-            print('after ave')
+
+
+            req = models.Request.objects.get(id=record.request_id)
+            req.supplier_done = 'Yes'
+            req.supplier_done_date = formatted_date_str
+            req.save()
+
+
+
+            bike = models.Bike.objects.get(reg_num=record.reg_num)
+            bike.last_service_details = record.values
+
+            bike.last_service = record.current_milage
+            bike.next_service = record.next_service_minor
+            bike.last_service_date = formatted_date_str
+            bike.save()
+
+
+
+
+
             return JsonResponse( {'message':"success"})
 
         
@@ -1375,8 +1463,9 @@ def tech_approves_service_view(request):
         enquiry.tech_approved="Yes"
 
         d = datetime.now()
-
-        enquiry.tech_approved_date = "{:%B %d, %Y}".format(d)
+        now = datetime.now()
+        formatted_date_str = now.strftime("%Y-%m-%d")
+        enquiry.tech_approved_date = formatted_date_str
         #enquiry.mechanic=subs.mechanic
         enquiry.save()
 
@@ -1424,20 +1513,39 @@ def manager_open_job_view(request):
     return redirect('manager-view-jobs')
 
 
+#Here
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_manager)
 def manager_approves_job_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
-    if request.method=='POST':
-        s_id = request.POST.get('s_id', '0')
+    if request.method == 'POST' and request.FILES['myfile']:
 
-        enquiry=models.Service.objects.get(id=s_id)
+
+
+        myfile = request.FILES['myfile']
+        r_id = request.POST.get('s_id', '0')
+        service=models.Service.objects.get(id=r_id)
+
+        fs = FileSystemStorage()
+
+        loc = os.path.join(str(r_id),str(service.lab_manager))
+        loc1 = os.path.join(loc,myfile.name.replace(' ','_'))
+        loco = os.path.join('css',loc1)
+        filename = fs.save(loco, myfile)
+        uploaded_file_url = fs.url(filename.replace(' ','_'))
+        print('saved here',uploaded_file_url)
+
+        now = datetime.now()
+        formatted_date_str = now.strftime("%Y-%m-%d")
+        enquiry=models.Service.objects.get(id=r_id)
         enquiry.manager_approved="Yes"
+        enquiry.CSS=uploaded_file_url
+        enquiry.CSS_date=formatted_date_str
 
         d = datetime.now()
 
-        enquiry.manager_approved_date = "{:%B %d, %Y}".format(d)
+        enquiry.manager_approved_date = formatted_date_str
         #enquiry.mechanic=subs.mechanic
         enquiry.save()
 
@@ -1694,17 +1802,29 @@ def customer_add_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
     enquiry=forms.RequestForm()
     if request.method=='POST':
-        enquiry=forms.RequestForm(request.POST)
-        if enquiry.is_valid():
-            enquiry_x=enquiry.save(commit=False)
-            #customer=models.Customer.objects.get(pc=enquiry_x.user_id)
 
-            # enquiry_x.pc=customer.user.username
-            enquiry_x.customer1=enquiry_x.lab_manager
-            enquiry_x.customer=enquiry_x.pc
-            enquiry_x.save()
-        else:
-            print("form is invalid",enquiry.errors.as_data())
+
+        vehicle_reg= request.POST.get('vehicle_reg','0')
+        vehicle_model= request.POST.get('vehicle_model','0')
+        vehicle_brand= request.POST.get('vehicle_brand','0')
+        problem_description= request.POST.get('problem_description','0')
+        dist= request.POST.get('dist','0')
+        category= request.POST.get('category','0')
+        pc= request.POST.get('pc','0')
+
+
+        req= models.Request()
+        req.vehicle_reg = vehicle_reg
+        req.vehicle_model = vehicle_model
+        req.vehicle_brand = vehicle_brand
+        req.problem_description = problem_description
+        req.lab_manager = request.user.username
+        req.category = category
+        req.pc = pc
+        req.distance_traveled_since_last_service = dist
+        req.save()
+
+
         return HttpResponseRedirect('customer-dashboard')
     return render(request,'vehicle/customer_add_request.html',{'enquiry':enquiry,'customer':customer})
 
@@ -1921,7 +2041,7 @@ def send_notice(m="",):
         mimemsg['From']="timesheet@brti.co.zw"
         mimemsg['To']='takaengwa@gmail.com'
         mimemsg['Cc']=runya
-        mimemsg['Subject']="BRTI TimeSheets Pending Approval "
+        mimemsg['Subject']="Request for quotatation "
         mimemsg.attach(MIMEText(message, 'plain'))
 
                 # with open(mail_attachment, "rb") as attachment:
@@ -1961,7 +2081,10 @@ def reports_view(request):
 def get_table_data(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
     dict_s= {}
-
+    Minor_Serviced_Date= {}
+    Minor_Serviced_Mileage= {}
+    Major_Serviced_Date= {}
+    Major_Serviced_Mileage= {}
     dict_r= {}
     if request.method=='POST':
        
@@ -1977,8 +2100,12 @@ def get_table_data(request):
         if name == 'req_completed': 
             enquiry=models.Service.objects.all().filter(~Q(POP_date="."))
             for enq in enquiry:
-                dict_r[enq.id] = model_to_dict(models.Request.objects.get(id=enq.request_id)) | model_to_dict(enq)
-            
+                try:
+                    dict_r[enq.id] = model_to_dict(models.Request.objects.get(id=enq.request_id)) | model_to_dict(enq) | model_to_dict(models.Bike.objects.get(reg_num=enq.reg_num)) | get_minor_and_major(enq.reg_num)
+                    
+                except Exception as e:
+                    print('not found', enq.reg_num)
+                    print('not found', str(e))
 
         elif name == 'all_req':
             dict_r = {obj.pk: model_to_dict(obj) for obj in models.Request.objects.all()}
@@ -1988,6 +2115,99 @@ def get_table_data(request):
 
         elif name == 'all_req':
             dict_r = {obj.pk: model_to_dict(obj) for obj in models.Request.objects.all()}
+
+
+
+
+
+        #json_data = serializers.serialize('json', [models.Request.objects.get(id=enq.request_id)])
+
+        return JsonResponse({'response':'success','data':dict_r})
+
+def get_minor_and_major(reg):
+    major_date = "n/a"
+    major_mileage = 0
+    minor_date= "n/a"
+    minor_mileage = 0
+    cos=0
+    distance_traveled = 0
+
+    my_dict ={}
+    try:
+        major = models.Request.objects.all().filter(Q(vehicle_reg=reg)& Q(category='Major')).order_by('-id').first()
+        major_service = models.Service.objects.get(request_id=major.id)
+        major_mileage = major_service.next_service_major
+        major_date=major_service.doc
+        cos = major_service.cos
+        distance_traveled = major.distance_traveled_since_last_service
+    except:
+        pass
+
+
+    try:
+        minor = models.Request.objects.all().filter(Q(vehicle_reg=reg)& Q(category='Minor')).order_by('-id').first()
+        minor_service = models.Service.objects.get(request_id=minor.id)
+        minor_mileage = minor_service.next_service_minor
+        minor_date=minor_service.doc
+        cos = minor_service.cos
+        distance_traveled = minor.distance_traveled_since_last_service
+
+
+
+
+
+    except:
+        pass
+
+
+    print('*********************************')
+    print(major,minor)
+
+
+
+    my_dict ={ 
+        'major_mileage':major_mileage,
+        'minor_mileage':minor_mileage,
+        'major_date':major_date,
+        'minor_date':minor_date,
+        'cos':cos,
+        'distance_traveled':distance_traveled,
+    }
+
+
+
+
+    return my_dict
+
+
+
+
+
+
+@login_required(login_url='customerlogin')
+@user_passes_test(is_customer)
+def get_bikes_data(request):
+    customer=models.Customer.objects.get(user_id=request.user.id)
+    dict_s= {}
+
+    dict_r= {}
+    if request.method=='POST':
+       
+
+        #enquiry.mechanic=subs.mechanic
+        #enquiry.save()
+  
+        return JsonResponse({'response':'no data'})
+
+    else:
+
+        name = request.GET.get('name', '0')
+
+        bikes=models.Bike.objects.all()
+        dict_r = {obj.pk: model_to_dict(obj) for obj in bikes}
+
+
+
 
 
 
