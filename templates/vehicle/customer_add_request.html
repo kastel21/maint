@@ -39,29 +39,59 @@
 <br><br><br><br><br>
 <h1 style="text-align:center;">MAKE REQUEST</h1>
 <div>
-  <form method="post" style="margin-left:200px;margin-right:200px;">
+  <form method="post" style="margin-left:200px;margin-right:200px;" >
       {% csrf_token %}
     <label for="category">Vehicle Category</label>
-    {% render_field enquiry.category class="form-control"  %}<br>
+      <select name="category" id="category">
+      <option value="major">Major</option>
+        <option value="minor">Minor</option>
+      <option value="wear and tear">Wear and Tear</option>
+
+    </select>
+    
+    <br>
 
 
     <label for="vehicle_name">Vehicle Reg No.</label>
-    {% render_field enquiry.vehicle_reg class="form-control" placeholder="Vehicle Reg Number" %}
+    <select name="vehicle_reg" id="vehicle_reg">
+      <option value="afv8039">afv8039</option>
+    </select>
 
-    <label for="vehicle_brand">Vehicle Brand</label>
-    {% render_field enquiry.vehicle_brand class="form-control" placeholder="Vehicle Brand" %}
 
-    <label for="vehicle_model">Vehicle Model</label>
-    {% render_field enquiry.vehicle_model class="form-control" placeholder="Vehicle Model" %}
+
+
+
+
+    <label for="vehicle_model">Vehicle Brand & Model</label>
+    <select>
+      <option value="Honda XL125">Honda XL125</option>
+      <option value="Lifestyle 150">Lifestyle 150 </option>
+      <option value="Haojin 200">Haojin 200  </option> 
+      <option value="Yamaha 125">Yamaha 125 </option>
+    </select>
 
     <label for="problem_description">Problem Description</label>
-    {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %}
+    <textarea type="text" class="form-control" name="problem_description" > </textarea>
 
-    <label for="vehicle_no">Provincial Coordinator</label>
-    {% render_field enquiry.pc class="form-control" placeholder="PC" %}
+    <label for="pc">Provincial Coordinator</label>
+    <select name="pc" id="pc">
+      <option value="mmoyo">mmoyo</option>
+      <option value="lmaguwu">lmaguwu</option>
+      <option value="pmuzavazi">pmuzavazi</option>
+      <option value="dgatsi">dgatsi</option>
+      <option value="ftasara">ftasara</option>
+      <option value="ntsvangirai">ntsvangirai</option>
+      <option value="bmudhumo">bmudhumo</option>
+      <option value="emukaronda">emukaronda</option>
 
-    <label for="vehicle_no">Laboratory Manager</label>
-    {% render_field enquiry.lab_manager class="form-control" placeholder="Lab Manager" %}
+    </select>
+
+    <label for="dist">Distance Travled Since Last Service (in KM)</label>
+    <input type="number" class="form-control" name="dist" />
+
+    <label for="lab_manager">Laboratory Manager</label>
+    <input type="text" class="form-control" name="lab_manager" />
+
 
     <input type="submit" value="Submit">
   </form>
@@ -70,4 +100,96 @@
 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+<script>
+
+$(document).ready(function() {
+
+
+
+  $.get("http://127.0.0.1:8000/get_bikes_data",
+  {
+    name: "all_bikes",
+    city: "Duckburg"
+  },
+  function(data, status){
+
+   //console.log(data);
+
+		$("#vehicle_reg").empty();
+		$("#theadid").empty();
+
+
+
+
+
+
+
+
+
+		// //Try to get tbody first with jquery children. works faster!
+		// var tbody = $('#tabledata').children('tbody');
+		// var th = $('#tabledata').children('thead');
+
+		// //Then if no tbody just select your table 
+		// var table = tbody.length ? tbody : $('#tabledata');
+
+
+		// 				table.append("  <tr><th>Request Date</th><th>Reg No.</th><th>Category</th><th>Problem</th><th>PC Approved</th><th>Reasons for Rejection</th><th>Submisions</th><th>Open for Submission</th></tr>"
+					
+		// 			);
+    // 		$.each(data['data'], function (index, value) {
+
+
+
+
+		// 			table.append('<tr><td>'
+		// 				+value["date1"]+'</td><td>'
+		// 				+value["vehicle_reg"]+'</td><td>'
+		// 				+value["category"]+'</td><td>'
+		// 				+value["problem_description"]+'</td><td>'
+		// 				+value["pc_approved"]+'</td><td>'
+		// 				+value["reasons"]+'</td><td>'
+		// 				+value["subs"]+'</td><td>'
+		// 				+value["job_open"]+'</td></tr>'
+					
+		// 			);
+
+
+
+    // 		}); 
+
+
+
+
+    $.each(data['data'], function(index, item) {
+      //console.log(item);
+        $('#vehicle_reg').append(new Option(item['reg_num'], item['reg_num']));
+    });
+
+
+
+
+  });
+
+
+  
+
+
+
+
+
+
+});
+
+
+
+
+
+
+
+</script>
+
 {% endblock content %}

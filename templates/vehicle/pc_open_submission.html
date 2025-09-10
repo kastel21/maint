@@ -82,13 +82,16 @@
 		<tr><td colspan="2" style="text-align: center;">{{sub.assessment}}</td>  </tr>
 
 		<tr> <td>Quotation:</td><td><a href="static/{{sub.quotation}}">{{sub.quotation}}</a></td>  </tr>
+				{% if 'procurement' in  user.groups.all.1.name %}
 <tr>	  		<td colspan="2" style="text-align: center;"><form method="post" action="pc-justify-supplier"> 
 						{% csrf_token %}   
 						<input style="display: none;" type="text" name="r_id" value="{{enquiry.id}}" />
 
 						<input style="display: none;" type="text" name="s_id" value="{{sub.id}}" />
 					<input type="submit" class="cc" style="color: black;" value='Select This Supplier' />
-					</form> </td>	</tr>
+					</form> </td>	
+				{%endif%}
+				</tr>
 
 	  </table>
 

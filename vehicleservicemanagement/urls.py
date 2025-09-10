@@ -60,6 +60,7 @@ urlpatterns = [
     path('customer-invoice', views.customer_invoice_view,name='customer-invoice'),
     path('customer-view-request',views.customer_view_request_view,name='customer-view-request'),
     path('get_table_data',views.get_table_data,name='get_table_data'),
+    path('get_bikes_data',views.get_bikes_data,name='get_bikes_data'),
 
 
     path('post_rider_data',views.post_rider_data,name='post_rider_data'),
@@ -152,7 +153,10 @@ urlpatterns = [
     path('finance-request',views.finance_request_view,name='finance-request'),
     path('manager-request',views.manager_request_view,name='manager-request'),
 
+    path('manager-open-job',views.manager_open_job_view,name='manager-open-job'),
 
+    path('customer_open_track_view',views.customer_open_track_view,name='customer_open_track_view'),
+    path('customer_view_tracks_view',views.customer_view_tracks_view,name='customer_view_tracks_view'),
 
 
 
@@ -160,7 +164,7 @@ urlpatterns = [
     path('customer-view-approved-request',views.customer_view_approved_request_view,name='customer-view-approved-request'),
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
-    path('logout', LogoutView.as_view(template_name='vehicle/index.html'),name='logout'),
+    path('logout', LogoutView.as_view(template_name='vehicle/customerclick.html'),name='logout'),
 
     path('aboutus', views.aboutus_view),
     path('contactus', views.contactus_view),

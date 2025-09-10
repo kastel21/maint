@@ -73,7 +73,7 @@ py manage.py runserver
 ```
 - Now enter following URL in Your Browser Installed On Your Pc
 ```
-https://kaslor.co.zw//
+http://127.0.0.1:8000/
 ```
 
 ## CHANGES REQUIRED FOR CONTACT US PAGE

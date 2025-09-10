@@ -112,13 +112,39 @@
 		<tr><td colspan="2" style="text-align: center;">{{service.values}}</td>  </tr>
 		<tr> <td>Quotation:</td><td><a href="static/{{service.invoice}}">{{service.invoice}}</a></td>  </tr>
 
-<tr>	  		<td colspan="2" style="text-align: center;"><form method="post" action="manager-approves-job"> 
+	  		<form method="post" action="manager-approves-job" enctype="multipart/form-data"> 
 						{% csrf_token %}   
-						<input style="display: none;" type="text" name="s_id" value="{{service.id}}" />
 
-						<textarea style="display: none;" class="form-control" name="justification" id="justification" placeholder="Enter justification for rejection"></textarea>
-					<input  type="submit" class="cc" style="color: black;margin-top: 10px;" value='Approve Service' />
-					</form> </td>	</tr>
+						<tr>
+							<td colspan="2" style="text-align: center;">
+							<input style="display: none;" type="text" name="s_id" value="{{service.id}}" />
+
+							<textarea style="display: none;" class="form-control" name="justification" id="justification" placeholder="Enter justification for rejection"></textarea>
+
+
+						</td>
+						</tr>
+
+						<tr>    
+						<td>
+									Select Confirmation of Satisfactory Service to upload:
+						</td>
+
+
+						<td>
+
+						    <input type="file" name="myfile" class="form-control" required/>
+
+					</td>  
+</tr>
+
+					<tr><td>
+					<button id="reject">Reject </button></td>	
+					<button style="display: none;" id="send_rejection">Send Rejection </button></td>	
+
+					<td><input  type="submit" class="cc" style="color: black;margin-top: 10px;" value='Approve Service' /> </td></tr>
+
+					</form> 
 
 	  </table>
 
@@ -138,4 +164,16 @@
 
   </div>
 </div>
+
+<script>
+function val() {
+
+      var yourUl = document.getElementById("justification");
+      yourUl.style.display = yourUl.style.display === 'none' ? '' : 'none';
+      var yourUl1 = document.getElementById("button");
+      yourUl1.style.display = yourUl1.style.display === 'none' ? '' : 'none';
+
+	  
+  }
+</script>
 {% endblock content %}

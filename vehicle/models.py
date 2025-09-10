@@ -154,6 +154,8 @@ class Request(models.Model):
 
     supplier_done = models.CharField(max_length=40,default='No')
     supplier_done_date = models.CharField(max_length=40,default='.')
+    distance_traveled_since_last_service = models.CharField(max_length=40,default='0')
+
 
 
 
@@ -199,7 +201,11 @@ class Service(models.Model):
 
     cos = models.TextField(default="0")
     invoice = models.TextField(default=".")
-    next_service = models.TextField(default="0")
+    next_service_minor = models.TextField(default="0")
+    next_service_major = models.TextField(default="0")
+
+    current_milage = models.TextField(default="0")
+
     tech = models.TextField(default="amtambara")
     tech_approved = models.TextField(default="No")
     tech_approved_date = models.TextField(default=".")
@@ -207,7 +213,8 @@ class Service(models.Model):
 
     POP = models.TextField(default="")
     POP_date = models.TextField(default=".")
-
+    CSS = models.TextField(default="")
+    CSS_date = models.TextField(default=".")
     lab_manager = models.TextField(default="manager1")
 
 
@@ -224,6 +231,8 @@ class Bike(models.Model):
     status_date = models.TextField(default=".")
     next_service = models.TextField()
     last_service = models.TextField()
+    last_service_date = models.TextField(default=".")
+
     last_service_details = models.TextField()
     estimate_milage = models.TextField()
     yr_procured= models.TextField(default=".")

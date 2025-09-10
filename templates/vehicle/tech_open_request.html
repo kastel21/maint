@@ -67,20 +67,28 @@
 			{%else%}
 
 
+
+			
+			       <form method="post" action="tech-approves-request"> 
+						{% csrf_token %}   
+						<input style="display: none;" type="text" name="r_id" value="{{enquiry.id}}" />
 			<tr> <td colspan="2" id="hide" style="display: none;">
 				<textarea class="form-control" name="reason" id="reasons" placeholder="enter the reasons for rejection"></textarea>
 			</td>
 			</tr>
-			<tr>
-			      <td> <form method="post" action="tech-approves-request"> 
-						{% csrf_token %}   
-						<input style="display: none;" type="text" name="r_id" value="{{enquiry.id}}" />
 
-					<input type="submit" class="cc" style="color: black;" value='Approve & Open' />
+
+
+				<tr> <td>
+					<input type="submit"  id="cc" style="color: black;" value='Approve & Open' />
+				</td>
+					<td> <button id="button" onclick="val()">Reject</button> </td>
+				
+			</tr>
 				</form>
-				</td> 
-				<td> <button id="button" onclick="val()">Reject</button> </td>
-				</tr>
+				
+				
+				
 
 			
 
@@ -109,6 +117,8 @@ function val() {
 
       var yourUl1 = document.getElementById("button");
       yourUl1.style.display = yourUl1.style.display === 'none' ? '' : 'none';
+
+	  document.getElementById("cc").value="Reject";
   }
 </script>
 {% endblock content %}

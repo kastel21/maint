@@ -154,13 +154,13 @@
 
 			</li>
 
-		{% if 'manager' in  user.groups.all.1.name or 'finance' in  user.groups.all.1.name or 'supplier' in  user.groups.all.1.name %}
+		{% if 'manager' in  user.groups.all.1.name or 'finance' in  user.groups.all.1.name or 'supplier' in  user.groups.all.1.name or 'logistics' in  user.groups.all.1.name%}
 
 			{%else%}
 			<li  class="sidebar-nav-item">
 				<a href="/pc-view-submission" class="sidebar-nav-link">
 					<div>
-					<i class="fas fa-comments"></i>
+					<i class="fas fa-bezier-curve"></i>
 					</div>
 					<span>Supplier Submissions</span>
 				</a>
@@ -172,7 +172,7 @@
 			<li  class="sidebar-nav-item">
 				<a href="/manager-view-jobs" class="sidebar-nav-link">
 					<div>
-					<i class="fas fa-comments"></i>
+					<i class="fas fa-cogs"></i>
 					</div>
 					<span>Pending Jobs</span>
 				</a>
@@ -182,7 +182,7 @@
 			<li  class="sidebar-nav-item">
 				<a href="/tech-view-service" class="sidebar-nav-link">
 					<div>
-					<i class="fas fa-comments"></i>
+					<i class="fas fa-cogs"></i>
 					</div>
 					<span>Pending Jobs</span>
 				</a>
@@ -192,34 +192,52 @@
 			<li  class="sidebar-nav-item">
 				<a href="/pc-view-jobs" class="sidebar-nav-link">
 					<div>
-					<i class="fas fa-comments"></i>
+					<i class="fas fa-cogs"></i>
 					</div>
 					<span>Pending Jobs</span>
 				</a>
 			</li>
 		{%endif%}
-		
-			{%if 'supplier' in  user.groups.all.1.name %}
+
+
+
+
+		{%if 'supplier' in  user.groups.all.1.name %}
+
 			<li  class="sidebar-nav-item">
 				<a href="/view-awards" class="sidebar-nav-link">
 					<div>
-					<i class="fas fa-comments"></i>
+					<i class="fas fa-chess-queen"></i>
 					</div>
 					<span>Service Awards</span>
 				</a>
 			</li>
-			{%endif%}
+
+
+
+
+
+
+
+		{%else%}
+			<li  class="sidebar-nav-item">
+				<a href="/customer_view_tracks_view" class="sidebar-nav-link">
+					<div>
+					<i class="fas fa-road"></i>
+					</div>
+					<span>Tracker</span>
+				</a>
+			</li>
 
 			<li  class="sidebar-nav-item">
 				<a href="/view-reports" class="sidebar-nav-link">
 					<div>
-					<i class="fas fa-comments"></i>
+					<i class="fas fa-chart-pie"></i>
 					</div>
 					<span>Reports</span>
 				</a>
 			</li>
-
-
+			{%endif%}
 		</ul>
 	</div>
 	<!-- end sidebar -->

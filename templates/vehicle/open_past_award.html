@@ -30,7 +30,7 @@
 
     <!-- Headers received from client. -->
     <div  class="table-container headers">
-      <h2 style="text-align: center;">Request for {{enquiry.vehicle_reg}}</h2>
+      <h2 style="text-align: center;">Summary for {{enquiry.vehicle_reg}}</h2>
       <table class="table">
         <thead>
           <tr>
@@ -54,36 +54,85 @@
 		  <tr><td>Job Open for submissions:</td> <td>{{enquiry.job_open}}</td></tr>
 		  <tr><td>Tehnical person:</td> <td>{{enquiry.technical}}</td></tr>
 		  <tr><td>Lab Manager:</td> <td>{{enquiry.lab_manager}}</td></tr>
-		  <tr><td>Lab Manager Approved:</td> <td>{{enquiry.lab_approved}}</td></tr>
+		  <!-- <tr><td>Lab Manager Approved:</td> <td>{{enquiry.lab_approved}}</td></tr> -->
 
 		  <tr><td>Technical Person Approved:</td> <td>{{enquiry.technical_approved}}</td></tr>
 
-		  <tr><td>Technical Person Approved:</td> <td>{{enquiry.technical_fin_approved}}</td></tr>
+		  <!-- <tr><td>Technical Person Approved:</td> <td>{{enquiry.technical_fin_approved}}</td></tr> -->
 		  <tr><td>Supplier Submissions:</td> <td>{{enquiry.subs}}</td></tr>
 
 
-
-
-			<tr> <td colspan="2" id="hide" style="display: none;">
-				<textarea class="form-control" name="reason" id="reasons" placeholder="enter the reasons for rejection"></textarea>
-			</td>
-			</tr>
-<!-- <tr>
-			      <td> <form method="post" action="tech-approves-request"> 
-						{% csrf_token %}   
-						<input style="display: none;" type="text" name="r_id" value="{{enquiry.id}}" />
-
-					<input type="submit" class="cc" style="color: black;" value='Approve & Open' />
-				</form>
-				</td> 
-				<td> <button id="button" onclick="val()">Reject</button> </td>
-</tr> -->
 
 
 
         </thead>
 
       </table>
+
+
+<hr>
+	  <h2 style="text-align: center;">Selected Supplier Assessment</h2>
+<hr>
+	  {%if sub%}
+
+	  <table class="table">
+		<tr> <td>Supplier:</td><td>{{sub.mechanic}}</td>  </tr>
+		<tr> <td colspan="2">Assessment:</td> </tr>
+		<tr><td colspan="2" style="text-align: center;">{{sub.assessment}}</td>  </tr>
+		<tr> <td>Quotation:</td><td><a href="static/{{sub.quotation}}">{{sub.quotation}}</a></td>  </tr>
+
+
+
+	  </table>
+
+
+
+	  {%else%}
+	  <h3>No Submissions for this record</h3>
+	  {%endif%}
+
+
+
+<hr>
+	  <h2 style="text-align: center;">Selected Supplier Service</h2>
+<hr>
+	  {%if service%}
+
+	  <table class="table">
+		<tr> <td>Supplier:</td><td>{{service.mechanic}}</td>  </tr>
+		<tr> <td>Service Type:</td><td>{{service.service}}</td>  </tr>
+		<tr> <td>Date of Completion:</td><td>{{service.doc}}</td>  </tr>
+		<tr> <td>Cost of Service:</td><td>{{service.cos}}</td>  </tr>
+		<tr> <td>Lab Manager:</td><td>{{service.lab_manager}}</td>  </tr>
+		<tr> <td>Manager Approved:</td><td>{{service.manager_approved}}</td>  </tr>
+		<tr> <td>Manager Approved Date:</td><td>{{service.manager_approved_date}}</td>  </tr>
+		<tr> <td>Next Service after:</td><td>{{service.next_service}}km</td>  </tr>
+
+		<tr> <td colspan="2" style="text-align: center;">Components Serviced:</td> </tr>
+		<tr><td colspan="2" style="text-align: center;">{{service.values}}</td>  </tr>
+		<tr> <td>Invoice:</td><td><a href="static/{{service.invoice}}">{{service.invoice}}</a></td>  </tr>
+
+<form method="post" action="lo-uploads-pop" enctype="multipart/form-data"> 
+						{% csrf_token %}   
+						<input style="display: none;" type="text" name="s_id" value="{{service.id}}" />
+
+	
+
+		<tr> <td>POP:</td><td><a href="static/{{service.POP}}">{{service.POP}}</a></td>  </tr>
+		<tr> <td>POP upload Date:</td><td>{{service.POP_date}}</td>  </tr>
+
+
+	</form> 
+
+
+	  </table>
+
+
+
+	  {%else%}
+	  <h3>No Submissions for this record</h3>
+	  {%endif%}
+
 
 
 
@@ -94,16 +143,4 @@
 
   </div>
 </div>
-
-
-<script>
-function val() {
-
-      var yourUl = document.getElementById("hide");
-      yourUl.style.display = yourUl.style.display === 'none' ? '' : 'none';
-
-      var yourUl1 = document.getElementById("button");
-      yourUl1.style.display = yourUl1.style.display === 'none' ? '' : 'none';
-  }
-</script>
 {% endblock content %}

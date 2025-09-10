@@ -10,15 +10,21 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+from pathlib import Path
+#import pyodbc
+from django.conf.global_settings import MEDIA_URL
+from django.contrib.messages import constants as messagesO
 import os
 import mimetypes
 mimetypes.add_type("text/css", ".css", True)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+########################BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
-STATIC_DIR=os.path.join(BASE_DIR,'static')
-MEDIA_ROOT=os.path.join(BASE_DIR,'static')
+###STATIC_DIR=os.path.join(BASE_DIR,'static')
+###MEDIA_ROOT=os.path.join(BASE_DIR,'static')
 
 
 # Quick-start development settings - unsuitable for production
@@ -47,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+	'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,8 +98,10 @@ WSGI_APPLICATION = 'vehicleservicemanagement.wsgi.application'
 
 
 
+
 DATABASES = {
     'default': {
+
         'ENGINE': 'mssql',
         'NAME': 'LSS_Bikes',
         'USER': 'admin',
@@ -106,6 +115,22 @@ DATABASES = {
 
 }
 
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'LSS',
+#         'USER': 'admin',
+#         'PASSWORD': 'Adm!n123',
+#         'HOST': 'mssql-133539-0.cloudclusters.net',
+#         "PORT":"17983",
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     }
+
+# }
 
 
 # Password validation
@@ -146,13 +171,13 @@ USE_TZ = True
 
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = "/static/"
+MEDIA_URL = "/images/"
 
-STATIC_URL = 'static'
-STATIC_ROOT='static'
-STATICFILES_DIRS=[
-STATIC_DIR,
- ]
 
+STATIC_ROOT = BASE_DIR / "static/"
+MEDIA_ROOT = BASE_DIR / "images"
+STATICFILES_STORAGE= 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_REDIRECT_URL='/afterlogin'
 
 #for contact us give your gmail id and password

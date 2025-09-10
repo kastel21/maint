@@ -50,7 +50,7 @@
                 <tr>         
 					<form method="post" action="supplier-open-request"> 
 						{% csrf_token %}   
-						<input type="text" name="id" value="{{enq.id}}" />
+						<input type="text" style="display: none;" name="id" value="{{enq.id}}" />
 					<td  ><input type="submit" class="cc" style="color: black;" value='{{enq.vehicle_reg}}' /></td>
 					</form> 
                   <td>{{enq.category}}</td>

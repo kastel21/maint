@@ -85,7 +85,7 @@
 $("#comp_req").click(function(){
 //alert("clicked")
 
-  $.get("https://kaslor.co.zw//get_table_data",
+  $.get("http://127.0.0.1:8000/get_table_data",
   {
     name: "req_completed",
     city: "Duckburg"
@@ -117,7 +117,7 @@ $("#comp_req").click(function(){
 
 		    //let arr = [10, 20, 30, 40, 50];
 
-						table.append("  <tr><th>Service Date</th><th>Reg No.</th><th>Category</th><th>Problem</th><th>Mechanic</th><th>Serviced</th><th>Cost</th><th>next service in km</th></tr>"
+table.append('  <tr><th>Date</th><th>Province</th><th>District</th><th>Bike Reg No.</th>     <th>Distance Traveled</th>        <th>Current Milage</th><th>Last service Date</th><th>Minor Serviced Date</th><th>Minor Serviced Mileage</th><th>Major Serviced Date</th><th>Major Serviced Mileage</th> <th>Cost Of Service</th></tr>'
 					
 					);
     		$.each(data['data'], function (index, value) {
@@ -127,13 +127,22 @@ $("#comp_req").click(function(){
 
 					table.append('<tr><td>'
 						+value["doc"]+'</td><td>'
-						+value["vehicle_reg"]+'</td><td>'
-						+value["category"]+'</td><td>'
-						+value["problem_description"]+'</td><td>'
-						+value["mechanic"]+'</td><td>'
-						+value["values"]+'</td><td>'
-						+value["cos"]+'</td><td>'
-						+value["next_service"]+'km</td></tr>'
+						+value["Province"]+'</td><td>'
+						+value["District"]+'</td><td>'
+						+value["reg_num"]+'</td><td>'
+						+value["distance_traveled"]+'km</td><td>'
+
+						+value["current_milage"]+'km</td><td>'
+						+value["last_service_date"]+'</td><td>'
+						+value["minor_date"]+'</td><td>'
+						+value["minor_mileage"]+'km</td><td>'
+						+value["major_date"]+'</td><td>'
+
+
+
+
+						+value["major_mileage"]+'km</td><td>$'
+						+value["cos"]+'</td></tr>'
 					
 					);
 
@@ -153,7 +162,7 @@ $("#comp_req").click(function(){
 $("#all_req").click(function(){
 //alert("clicked")
 
-  $.get("https://kaslor.co.zw//get_table_data",
+  $.get("http://127.0.0.1:8000/get_table_data",
   {
     name: "all_req",
     city: "Duckburg"
@@ -225,7 +234,7 @@ $("#all_req").click(function(){
 $("#all_bikes").click(function(){
 //alert("clicked")
 
-  $.get("https://kaslor.co.zw//get_table_data",
+  $.get("http://127.0.0.1:8000/get_table_data",
   {
     name: "all_bikes",
     city: "Duckburg"
@@ -285,6 +294,9 @@ $("#all_bikes").click(function(){
 
 
   });
+
+
+  
 });
 
 
