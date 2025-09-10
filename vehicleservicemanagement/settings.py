@@ -179,7 +179,7 @@ STATIC_ROOT = BASE_DIR / "static/"
 MEDIA_ROOT = BASE_DIR / "images"
 STATICFILES_STORAGE= 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_REDIRECT_URL='/afterlogin'
-
+LOGOUT_REDIRECT_URL ='/login'
 #for contact us give your gmail id and password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'outlook.office365.com'
