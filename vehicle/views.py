@@ -477,8 +477,9 @@ def pc_view_completed_request_view(request):
 def pc_open_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
     if request.method=='POST':
-        s_id = request.POST.get('id', '0')
+        s_id = request.POST.get('r_id', '0')
         flag = request.POST.get('flag', '0')
+        reasons = request.POST.get('reasons', '0')
 
 
         enquiry=models.Request.objects.get(id=s_id)
