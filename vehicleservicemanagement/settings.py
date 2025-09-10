@@ -1,3 +1,4 @@
+
 """
 Django settings for vehicleservicemanagement project.
 
@@ -93,7 +94,7 @@ WSGI_APPLICATION = 'vehicleservicemanagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'LSS',
+        'NAME': 'LSS_Bikes',
         'USER': 'admin',
         'PASSWORD': 'Adm!n123',
         'HOST': 'mssql-133539-0.cloudclusters.net',
@@ -102,10 +103,7 @@ DATABASES = {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
     },
-    'auth_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'auth_db.sqlite3',
-    },
+
 }
 
 
@@ -149,8 +147,8 @@ USE_TZ = True
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/static/'
-STATIC_ROOT='/static/'
+STATIC_URL = 'static'
+STATIC_ROOT='static'
 STATICFILES_DIRS=[
 STATIC_DIR,
  ]
