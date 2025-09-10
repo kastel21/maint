@@ -72,11 +72,11 @@
 
 							<a href="#" class="dropdown-menu-link">
 								<form method="post" action="/logout">
+									{% csrf_token %}
 								<div>
 									<i class="fas fa-sign-out-alt"></i>
 								</div>
-								<input type="submit" value="sign out"/>
-								<span>Logout</span>
+								<span><input type="submit" value="Logout"/></span>
 								</form>
 							</a>
 						</li>
