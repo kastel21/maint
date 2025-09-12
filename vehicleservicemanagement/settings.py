@@ -159,14 +159,13 @@ USE_TZ = True
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = 'static'
+STATIC_URL = 'static/'
 STATIC_ROOT='assets'
 STATICFILES_DIRS=[
 STATIC_DIR,
  ]
 
 LOGIN_REDIRECT_URL='/afterlogin'
-LOGOUT_REDIRECT_URL ='/login'
 
 #for contact us give your gmail id and password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
