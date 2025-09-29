@@ -412,7 +412,7 @@ def manager_view_request_view(request):
 def pc_view_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
 
-    enquiries=models.Request.objects.all().filter( Q( Q(pc=request.user.username)) & Q( pc_approved="No"))
+    enquiries=models.Request.objects.all().filter( Q( Q(pc=request.user.username)) & Q( pc_approved="No") & Q( pc_rejected_date=".") )
 
     print('comparing ', customer.user.username)
     print('with', enquiries)
@@ -447,6 +447,23 @@ def pc_view_rejected_request_view(request):
     return render(request,'vehicle/pc_view_requests.html',{'customer':customer,'enquiries':enquiries,'flag':'rejected'})
 
 
+
+@login_required(login_url='customerlogin')
+@user_passes_test(is_manager)
+def manager_view_rejected_request_view(request):
+    customer=models.Customer.objects.get(user_id=request.user.id)
+
+    enquiries=models.Request.objects.all().filter( Q( Q(lab_manager=request.user.username)) & ~Q( pc_rejected_date=".") )
+
+    print('comparing ', customer.user.username)
+    print('with', enquiries)
+
+
+    return render(request,'vehicle/manager_view_requests.html',{'customer':customer,'enquiries':enquiries,'flag':'rejected'})
+
+
+
+
 @login_required(login_url='customerlogin')
 @user_passes_test(is_pc)
 def pc_view_completed_request_view(request):
@@ -477,18 +494,28 @@ def pc_view_completed_request_view(request):
 def pc_open_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
     if request.method=='POST':
-        s_id = request.POST.get('r_id', '0')
+        s_id = request.POST.get('id', '0')
         flag = request.POST.get('flag', '0')
-        reasons = request.POST.get('reasons', '0')
-
-
+        reasons = request.POST.get('reasons', '')
         enquiry=models.Request.objects.get(id=s_id)
-        #enquiry.job_open="No"
-
         subs= models.Assessments.objects.all().filter(job = s_id)
+        now = datetime.now()
+        formatted_date_str = now.strftime("%Y-%m-%d")
 
-        #enquiry.mechanic=subs.mechanic
-        #enquiry.save()
+        if reasons == "":
+            enquiry.job_open="Yes"
+            enquiry.pc_approved="Yes"
+            enquiry.pc_approved_date = formatted_date_str
+            enquiry.save()
+
+        else:
+            enquiry.pc_rejected_date = formatted_date_str
+
+            enquiry.reasons=reasons
+            enquiry.save()
+
+            #enquiry.mechanic=subs.mechanic
+            #enquiry.save()
         if 'completed' in flag:
             
             req=models.Request.objects.get(id=s_id)
@@ -616,6 +643,25 @@ def tech_open_request_view(request):
     else:
         return redirect('tech-view-request')
 
+@login_required(login_url='customerlogin')
+@user_passes_test(is_manager)
+def manager_open_request_view(request):
+    customer=models.Customer.objects.get(user_id=request.user.id)
+    if request.method=='POST':
+        s_id = request.POST.get('id', '0')
+        flag = request.POST.get('flag1', '0')
+
+        enquiry=models.Request.objects.get(id=s_id)
+        #enquiry.job_open="No"
+
+        #subs= models.Assessments.objects.all().filter(job = s_id)
+
+        #enquiry.mechanic=subs.mechanic
+        #enquiry.save()
+
+        return render(request,'vehicle/manager_open_request.html',{'customer':customer,'enquiry':enquiry, 'flag1':flag})
+    else:
+        return redirect('tech-view-request')
 
 
 
@@ -672,7 +718,7 @@ def tech_approves_request_view(request):
 def finance_view_request_view(request):
     customer=models.Customer.objects.get(user_id=request.user.id)
 
-    enquiries=models.Request.objects.all().filter(  Q( pc_approved="Yes") & Q(finance_approved="No") & ~Q(mechanic="None")  )
+    enquiries=models.Request.objects.all().filter(  Q( pc_approved="Yes") & Q(finance_approved="No") & ~Q(mechanic="None")  & Q(finance_rejected_date=".")  )
 
     print('comparing ', customer.user.username)
     print('with', enquiries)
@@ -1068,6 +1114,21 @@ def past_awards(request):
 
     return render(request,'vehicle/past_awards.html',{'customer':customer,'enquiries':enquiries})
 
+
+@login_required(login_url='customerlogin')
+@user_passes_test(is_supplier)
+def rejected_awards(request):
+    customer=models.Customer.objects.get(user_id=request.user.id)
+
+    enquiries=models.Service.objects.all().filter( 
+        #Q( mechanic=request.user.username) &
+          ~Q(manager_rejected_date ="." ))
+
+    print('comparing ', customer.user.username)
+    print('with', enquiries)
+
+
+    return render(request,'vehicle/rejected_awards.html',{'customer':customer,'enquiries':enquiries})
 
 
 @login_required(login_url='customerlogin')
@@ -1526,8 +1587,9 @@ def manager_approves_job_view(request):
 
         myfile = request.FILES['myfile']
         r_id = request.POST.get('s_id', '0')
-        service=models.Service.objects.get(id=r_id)
+        reasons = request.POST.get('justification', '')
 
+        service=models.Service.objects.get(id=r_id)
         fs = FileSystemStorage()
 
         loc = os.path.join(str(r_id),str(service.lab_manager))
@@ -1540,15 +1602,25 @@ def manager_approves_job_view(request):
         now = datetime.now()
         formatted_date_str = now.strftime("%Y-%m-%d")
         enquiry=models.Service.objects.get(id=r_id)
-        enquiry.manager_approved="Yes"
+
         enquiry.CSS=uploaded_file_url
         enquiry.CSS_date=formatted_date_str
 
-        d = datetime.now()
+        if reasons == '':
+            print('accepted----------------------------------------------------------------------',reasons)
 
-        enquiry.manager_approved_date = formatted_date_str
-        #enquiry.mechanic=subs.mechanic
-        enquiry.save()
+            enquiry.manager_approved="Yes"
+            enquiry.manager_approved_date = formatted_date_str
+            #enquiry.mechanic=subs.mechanic
+            enquiry.save()
+
+        else:
+
+            print('rejected----------------------------------------------------------------------',reasons)
+            enquiry.manager_approved="No"
+            enquiry.manager_rejected_date = formatted_date_str
+            enquiry.reasons=reasons
+            enquiry.save()
 
         return redirect('manager-view-jobs')
     else:
@@ -1813,7 +1885,8 @@ def customer_add_request_view(request):
         category= request.POST.get('category','0')
         pc= request.POST.get('pc','0')
 
-
+        now = datetime.now()
+        formatted_date_str = now.strftime("%Y-%m-%d")
         req= models.Request()
         req.vehicle_reg = vehicle_reg
         req.vehicle_model = vehicle_model
@@ -1822,7 +1895,10 @@ def customer_add_request_view(request):
         req.lab_manager = request.user.username
         req.category = category
         req.pc = pc
+        req.date= formatted_date_str
+        req.date1 = formatted_date_str
         req.distance_traveled_since_last_service = dist
+
         req.save()
 
 

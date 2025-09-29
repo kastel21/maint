@@ -100,9 +100,9 @@ class Request(models.Model):
     vehicle_brand = models.CharField(max_length=40,null=False)
 
     problem_description = models.CharField(max_length=500,null=False)
-    date=models.DateField(auto_now=True)
+    date=models.DateField(null=True)
     cost=models.PositiveIntegerField(null=True)
-    date1=models.DateField(auto_now=True)
+    date1=models.DateField(null=True)
 
     customer1=models.CharField(max_length=40,default='')
 

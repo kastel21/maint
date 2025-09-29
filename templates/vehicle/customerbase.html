@@ -70,15 +70,16 @@
 
 						<li  class="dropdown-menu-item">
 
-							<a href="#" class="dropdown-menu-link">
 								<form method="post" action="/logout">
 									{% csrf_token %}
+
 								<div>
-									<i class="fas fa-sign-out-alt"></i>
+									<i class="fas fa-sign-out-alt" style="margin-left:10%;"> <input class="btn btn-danger" type="submit" value="Logout"/></i>
 								</div>
-								<span><input type="submit" value="Logout"/></span>
+
+								
 								</form>
-							</a>
+							
 						</li>
 					</ul>
 				</div>

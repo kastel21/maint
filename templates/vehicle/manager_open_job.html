@@ -138,13 +138,18 @@
 					</td>  
 </tr>
 
-					<tr><td>
-					<button id="reject">Reject </button></td>	
-					<button style="display: none;" id="send_rejection">Send Rejection </button></td>	
+	
 
-					<td><input  type="submit" class="cc" style="color: black;margin-top: 10px;" value='Approve Service' /> </td></tr>
+	<tr><td colspan="2"><input class="btn btn-primary" type="submit" id="cc" style="color: rgb(238, 236, 236);margin-top: 10px;" value='Approve Service' /> </td></tr>
+
+
+
+
 
 					</form> 
+
+	<tr><td colspan="2">
+					<button class="btn btn-danger" id="reject" onclick="val();">Reject </button></td></tr>
 
 	  </table>
 
@@ -170,8 +175,11 @@ function val() {
 
       var yourUl = document.getElementById("justification");
       yourUl.style.display = yourUl.style.display === 'none' ? '' : 'none';
-      var yourUl1 = document.getElementById("button");
-      yourUl1.style.display = yourUl1.style.display === 'none' ? '' : 'none';
+      var yourUl1 = document.getElementById("cc").value = "Submit Rejection";
+
+	var yourU2 = document.getElementById("reject");
+
+    yourU2.style.display = yourU2.style.display === 'none' ? '' : 'none';
 
 	  
   }

@@ -75,6 +75,7 @@ urlpatterns = [
     path('pc-view-completed-request',views.pc_view_completed_request_view,name='pc-view-completed-request'),
 
     path('pc-view-request',views.pc_view_request_view,name='pc-view-request'),
+    path('manager-open-request',views.manager_open_request_view,name='manager-open-request'),
 
     path('pc-open-request',views.pc_open_request_view,name='pc-open-request'),
     path('pc-approves-request',views.pc_approves_request_view,name='pc-approves-request'),
@@ -105,6 +106,7 @@ urlpatterns = [
     path('pending-awards',views.pending_awards,name='pending-awards'),
     path('current-awards',views.current_awards,name='current-awards'),
     path('past-awards',views.past_awards,name='past-awards'),
+    path('rejected-awards',views.rejected_awards,name='rejected-awards'),
 
     path('view-awards',views.supplier_awards_view,name='view-awards'),
     path('update-award',views.supplier_update_award_view,name='update-award'),
@@ -153,6 +155,7 @@ urlpatterns = [
     path('pc-request',views.pc_request_view,name='pc-request'),
     path('finance-request',views.finance_request_view,name='finance-request'),
     path('manager-request',views.manager_request_view,name='manager-request'),
+    path('manager-view-rejected-request',views.manager_view_rejected_request_view,name='manager-view-rejected-request'),
 
     path('manager-open-job',views.manager_open_job_view,name='manager-open-job'),
 

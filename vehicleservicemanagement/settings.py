@@ -175,14 +175,25 @@ USE_TZ = True
 STATIC_URL = "/static/"
 MEDIA_URL = "/images/"
 
+##<<<<<<< HEAD
+#=======
+#STATIC_URL = 'static/'
+#STATIC_ROOT='assets'
+#STATICFILES_DIRS=[
+#STATIC_DIR,
+## ]
+#>>>>>>> 258eba7c94fa6fb9c0dc1988b9ac536600a94df1
 
 STATIC_ROOT = BASE_DIR / "static/"
 MEDIA_ROOT = BASE_DIR / "images"
 STATICFILES_STORAGE= 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_REDIRECT_URL='/afterlogin'
+<<<<<<< HEAD
 ##LOGOUT_REDIRECT_URL ='/login'
 #<<<<<<< HEAD
 ########=======
+=======
+>>>>>>> 258eba7c94fa6fb9c0dc1988b9ac536600a94df1
 
 ###############>>>>>>> 67a6665d0cae4ddae3fb4c93c53218867b4a3ce0
 #for contact us give your gmail id and password
