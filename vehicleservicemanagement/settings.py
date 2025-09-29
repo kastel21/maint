@@ -1,4 +1,5 @@
 
+
 """
 Django settings for vehicleservicemanagement project.
 
@@ -103,7 +104,7 @@ DATABASES = {
     'default': {
 
         'ENGINE': 'mssql',
-        'NAME': 'LSS_Bikes',
+        'NAME': 'bikes',
         'USER': 'admin',
         'PASSWORD': 'Adm!n123',
         'HOST': 'mssql-133539-0.cloudclusters.net',
@@ -189,7 +190,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'outlook.office365.com'
 EMAIL_PORT = 995
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'timesheet@brti.co.zw'
+EMAIL_HOST_USER = 'bikeservice@brti.co.zw'
 EMAIL_HOST_PASSWORD = 'p@s3w0rd?1995'
 # now sign in with your host gmail account in your browser
 # open following link and turn it ON

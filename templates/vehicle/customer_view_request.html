@@ -34,6 +34,14 @@
 							<tbody>
                 {% for enq in enquiries %}
                 <tr>
+
+					<form method="post" action="customer-open-request"> 
+						{% csrf_token %}   
+						<input type="text" style="display: none;" name="id" value="{{enq.id}}" />
+					<td  ><input type="submit" class="cc" style="color: black;" value='{{enq.vehicle_reg}}' /></td>
+					</form> 
+
+
                   <td>{{enq.vehicle_reg}}</td>
                   <td>{{enq.category}}</td>
                   <td>{{enq.problem_description}}</td>

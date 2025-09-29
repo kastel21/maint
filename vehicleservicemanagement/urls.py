@@ -129,6 +129,7 @@ urlpatterns = [
     path('lo-request',views.lo_request_view,name='lo-request'),
     path('lo-uploads-pop',views.lo_uploads_pop_view,name='lo-uploads-pop'),
 
+    path('customer-open-request',views.customer_open_request,name='customer-open-request'),
 
     
     path('lo-view-completed',views.lo_view_completed_request_view,name='lo-view-completed'),
@@ -162,6 +163,7 @@ urlpatterns = [
 
     path('customer-delete-request/<int:pk>', views.customer_delete_request_view,name='customer-delete-request'),
     path('customer-view-approved-request',views.customer_view_approved_request_view,name='customer-view-approved-request'),
+    path('customer-view-rejected-request',views.customer_view_rejected_request_view,name='customer-view-rejected-request'),
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='vehicle/customerclick.html'),name='logout'),
